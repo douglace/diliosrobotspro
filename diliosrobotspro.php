@@ -59,9 +59,28 @@ class Diliosrobotspro extends Module
          * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
          */
         $this->bootstrap = true;
+
+        $this->tabs = array(
+            array(
+                'name'=> $this->trans('Robots pro', array(), 'Modules.Diliosrobotspro.Admin'),
+                'class_name'=>'AdminParentRobotsPro',
+                'parent'=>'AdminParentModulesSf',
+            ),
+            array(
+                'name'=> $this->trans('Revision', array(), 'Modules.Diliosrobotspro.Admin'),
+                'class_name'=>'AdminRobotsProRevision',
+                'parent'=>'AdminParentRobotsPro',
+            ),
+            array(
+                'name'=> $this->trans('Crawled', array(), 'Modules.Diliosrobotspro.Admin'),
+                'class_name'=>'AdminRobotsProCrawled',
+                'parent'=>'AdminParentRobotsPro',
+            )
+        );
+
         $this->repository = new Dilios\Diliosrobotspro\Repository($this); 
         parent::__construct();
-
+        
         $this->displayName = $this->l('Robots generators');
         $this->description = $this->l('Générateur de robot txt');
 
@@ -254,18 +273,14 @@ class Diliosrobotspro extends Module
     public function hookDisplayBackOfficeHeader()
     {
         if (Tools::getValue('configure') == $this->name) {
+            $store_url = $this->context->link->getBaseLink();
+            Media::addJsDef([
+                'add_site_map_name' => $this->l('Add sitemap'),
+                'site_map_url' => $store_url.$this->context->shop->id.'_index_sitemap.xml',
+            ]);
             $this->context->controller->addJS($this->_path.'views/js/back.js');
             $this->context->controller->addCSS($this->_path.'views/css/back.css');
         }
-    }
-
-    /**
-     * Add the CSS & JavaScript files you want to be added on the FO.
-     */
-    public function hookHeader()
-    {
-        $this->context->controller->addJS($this->_path.'/views/js/front.js');
-        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 
     public function hookModuleRoutes() {

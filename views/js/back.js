@@ -31,7 +31,6 @@ var _bo_v6_ = {
     init: function() {
         this.trigerMenuTab()
     },
-    
     trigerMenuTab: function() {
         let menues = document.querySelectorAll('.v6-menu-left ul a'),
             configsMenue = document.querySelectorAll('.configuration-anchor a');
@@ -82,9 +81,25 @@ var _bo_v6_ = {
             config.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
             anchor.parentNode.classList.add('active')
         }
+    },
+    addSitemapBtn: function(){
+        const btn = document.createElement('button');
+        btn.classList.add('btn','btn-default', 'pull-left');
+        btn.innerText = add_site_map_name;
+        const footer = document.querySelector('#v6-configurations .panel-footer')
+        const submit = document.querySelector('#v6-configurations .panel-footer button[type="submit"]')
+        footer.insertBefore(btn, submit)
+        btn.addEventListener('click', this.handleAddSitemap)
+    },
+    handleAddSitemap: function(e){
+        e.preventDefault();
+        const text = document.querySelector('#DILIOSROBOTSPRO_SHOP')
+        text.value = text.value + ' \nSitemap: ' + site_map_url
+        console.log(e)
     }
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
-    _bo_v6_.init()
+    _bo_v6_.init();
+    _bo_v6_.addSitemapBtn();
 });

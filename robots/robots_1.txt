@@ -1,2 +1,3 @@
 Bonjour le monde
-Je suis là
+Je suis là 
+Sitemap : http://localhost:8888/prestashop/ps1788/1_index_sitemap.xml

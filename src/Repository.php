@@ -26,11 +26,13 @@
 
 namespace Dilios\Diliosrobotspro;
 
-
+use Dilios\Diliosrobotspro\Classes\DiliosRobot;
 use Language;
 use Context;
 use Tab;
 use Db;
+use Shop;
+use Robotstxt;
 
 class Repository
 {
@@ -62,6 +64,7 @@ class Repository
     {
         return $this->installDatabase() &&
         $this->installTab(true) &&
+        $this->createRobotsDirectory() &&
         $this->installFolder() &&
         $this->renameRobotFile(true) &&
         $this->registerHooks();
@@ -211,6 +214,28 @@ class Repository
             }
         }
         return true;
+    }
+
+    public function createRobotsDirectory() {
+        $shops = Shop::getShops();
+        $filename = _PS_ROOT_DIR_.'/robots.txt';
+        if(file_exists($filename)){
+            $content = @file_get_contents($filename);
+            foreach($shops as $shop) {
+                $shopfile = DiliosRobot::getRobotsFileByShop($shop['id_shop']);
+                if(!file_exists($shopfile)){
+                    $rb = Robotstxt::getByIdShop($shop['id_shop']);
+                    $rb->id_shop = $shop['id_shop'];
+                    $rb->content = $content;
+                    if($rb->save()) {
+                        @file_put_contents(
+                            $shopfile,
+                            $content
+                        );
+                    }
+                }
+            }
+        }
     }
 
     

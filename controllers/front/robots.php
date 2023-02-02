@@ -30,9 +30,24 @@ use Dilios\Diliosrobotspro\Classes\DiliosRobot;
 class diliosrobotsproRobotsModuleFrontController extends ModuleFrontController {
     public function init() {
         parent::init();
+        $this->saveCrawler();
         $content = DiliosRobot::getRobotsContentByShop($this->context->shop->id);
         header('Content-Type:text/html; charset=UTF-8');
         echo $content;
         exit;
+    }
+
+    public function saveCrawler(){
+        $crl = new RobotstxtCrawled();
+        $rb = Robotstxt::getByIdShop($this->context->shop->id);
+        if(Validate::isLoadedObject($rb)) {
+            $crl->id_robotstxt = $rb->id;
+            $crl->id_shop = $this->context->shop->id;
+            $crl->user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $crl->boot_name = $_SERVER['HTTP_USER_AGENT'];
+            $crl->crawls = $_SERVER['HTTP_USER_AGENT'];
+            $crl->save();
+        }
+        
     }
 }
