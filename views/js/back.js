@@ -95,11 +95,13 @@ var _bo_v6_ = {
         e.preventDefault();
         const text = document.querySelector('#DILIOSROBOTSPRO_SHOP')
         text.value = text.value + ' \nSitemap: ' + site_map_url
-        console.log(e)
     }
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
     _bo_v6_.init();
-    _bo_v6_.addSitemapBtn();
+
+    if(can_add_site_map) {
+        _bo_v6_.addSitemapBtn();
+    }
 });

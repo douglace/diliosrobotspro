@@ -274,7 +274,10 @@ class Diliosrobotspro extends Module
     {
         if (Tools::getValue('configure') == $this->name) {
             $store_url = $this->context->link->getBaseLink();
+            $activeGsitemap = Module::getInstanceByName('gsitemap');
+            
             Media::addJsDef([
+                'can_add_site_map' => Validate::isLoadedObject($activeGsitemap) && $activeGsitemap->active,
                 'add_site_map_name' => $this->l('Add sitemap'),
                 'site_map_url' => $store_url.$this->context->shop->id.'_index_sitemap.xml',
             ]);
